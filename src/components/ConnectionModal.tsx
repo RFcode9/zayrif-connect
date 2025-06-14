@@ -22,6 +22,10 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({ isOpen, onClose, pcCo
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
 
+  // Use the specific AnyDesk address you provided
+  const anydeskAddress = "1520722517";
+  const anydeskPassword = pcConfig.anydeskPassword || "password123";
+
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
     toast({
@@ -31,16 +35,14 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({ isOpen, onClose, pcCo
   };
 
   const connectViaAnyDesk = () => {
-    if (pcConfig.anydeskId) {
-      // Try to open AnyDesk with the ID
-      const anydeskUrl = `anydesk:${pcConfig.anydeskId}`;
-      window.location.href = anydeskUrl;
-      
-      toast({
-        title: "Launching AnyDesk",
-        description: "Opening AnyDesk application...",
-      });
-    }
+    // Try to open AnyDesk with the specific address
+    const anydeskUrl = `anydesk:${anydeskAddress}`;
+    window.location.href = anydeskUrl;
+    
+    toast({
+      title: "Launching AnyDesk",
+      description: "Opening AnyDesk application...",
+    });
   };
 
   return (
@@ -56,15 +58,15 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({ isOpen, onClose, pcCo
         <div className="space-y-4">
           {/* AnyDesk ID */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">AnyDesk ID</label>
+            <label className="text-sm font-medium">AnyDesk Address</label>
             <div className="flex items-center space-x-2">
               <div className="flex-1 p-2 bg-muted rounded-md font-mono text-sm">
-                {pcConfig.anydeskId}
+                {anydeskAddress}
               </div>
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => copyToClipboard(pcConfig.anydeskId!, 'AnyDesk ID')}
+                onClick={() => copyToClipboard(anydeskAddress, 'AnyDesk Address')}
               >
                 <Copy className="w-4 h-4" />
               </Button>
@@ -76,7 +78,7 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({ isOpen, onClose, pcCo
             <label className="text-sm font-medium">Password</label>
             <div className="flex items-center space-x-2">
               <div className="flex-1 p-2 bg-muted rounded-md font-mono text-sm">
-                {showPassword ? pcConfig.anydeskPassword : '••••••••'}
+                {showPassword ? anydeskPassword : '••••••••'}
               </div>
               <Button
                 size="sm"
@@ -88,7 +90,7 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({ isOpen, onClose, pcCo
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => copyToClipboard(pcConfig.anydeskPassword!, 'Password')}
+                onClick={() => copyToClipboard(anydeskPassword, 'Password')}
               >
                 <Copy className="w-4 h-4" />
               </Button>
@@ -109,7 +111,7 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({ isOpen, onClose, pcCo
               <p className="mb-2">Manual connection steps:</p>
               <ol className="list-decimal list-inside space-y-1 text-xs">
                 <li>Open AnyDesk application</li>
-                <li>Enter the AnyDesk ID: <code className="bg-muted px-1 rounded">{pcConfig.anydeskId}</code></li>
+                <li>Enter the AnyDesk Address: <code className="bg-muted px-1 rounded">{anydeskAddress}</code></li>
                 <li>Click "Connect"</li>
                 <li>Enter the password when prompted</li>
               </ol>
