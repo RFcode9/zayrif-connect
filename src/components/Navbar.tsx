@@ -1,12 +1,15 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const navItems = [
     { name: 'Home', path: '/' },
@@ -15,8 +18,15 @@ const Navbar = () => {
     { name: 'Support', path: '/support' },
   ];
 
+  const authenticatedNavItems = [
+    ...navItems,
+    { name: 'Dashboard', path: '/dashboard' },
+  ];
+
+  const currentNavItems = isAuthenticated ? authenticatedNavItems : navItems;
+
   return (
-    <nav className="fixed top-0 w-full z-50 glass-effect border-b border-primary/20">
+    <nav className="fixed top-0 w-full z-50 glass-effect border-b border-border/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -30,14 +40,14 @@ const Navbar = () => {
           
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {navItems.map((item) => (
+              {currentNavItems.map((item) => (
                 <button
                   key={item.name}
                   onClick={() => navigate(item.path)}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
                     location.pathname === item.path
-                      ? 'text-accent bg-primary/20'
-                      : 'text-foreground hover:text-accent hover:bg-primary/10'
+                      ? 'text-accent bg-accent/20'
+                      : 'text-foreground hover:text-accent hover:bg-accent/10'
                   }`}
                 >
                   {item.name}
@@ -47,19 +57,46 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
-            <Button 
-              variant="outline" 
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-              onClick={() => navigate('/login')}
-            >
-              Login
-            </Button>
-            <Button 
-              className="bg-accent text-accent-foreground hover:bg-accent/90"
-              onClick={() => navigate('/login')}
-            >
-              Get Started
-            </Button>
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-3">
+                <Button 
+                  variant="ghost"
+                  onClick={() => navigate('/profile')}
+                  className="flex items-center space-x-2 hover:bg-accent/10"
+                >
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src={user?.avatar} alt={user?.name} />
+                    <AvatarFallback className="bg-accent text-accent-foreground text-xs">
+                      {user?.name?.split(' ').map(n => n[0]).join('')}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm">{user?.name}</span>
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="border-border text-foreground hover:bg-destructive hover:text-destructive-foreground"
+                  onClick={logout}
+                >
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Button 
+                  variant="outline" 
+                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                  onClick={() => navigate('/login')}
+                >
+                  Login
+                </Button>
+                <Button 
+                  className="tech-button text-foreground"
+                  onClick={() => navigate('/login')}
+                >
+                  Get Started
+                </Button>
+              </>
+            )}
           </div>
 
           <div className="md:hidden">
@@ -78,7 +115,7 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 glass-effect">
-            {navItems.map((item) => (
+            {currentNavItems.map((item) => (
               <button
                 key={item.name}
                 onClick={() => {
@@ -87,34 +124,36 @@ const Navbar = () => {
                 }}
                 className={`block px-3 py-2 rounded-md text-base font-medium w-full text-left transition-colors duration-200 ${
                   location.pathname === item.path
-                    ? 'text-accent bg-primary/20'
-                    : 'text-foreground hover:text-accent hover:bg-primary/10'
+                    ? 'text-accent bg-accent/20'
+                    : 'text-foreground hover:text-accent hover:bg-accent/10'
                 }`}
               >
                 {item.name}
               </button>
             ))}
-            <div className="px-3 py-2 space-y-2">
-              <Button 
-                variant="outline" 
-                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground w-full"
-                onClick={() => {
-                  navigate('/login');
-                  setIsOpen(false);
-                }}
-              >
-                Login
-              </Button>
-              <Button 
-                className="bg-accent text-accent-foreground hover:bg-accent/90 w-full"
-                onClick={() => {
-                  navigate('/login');
-                  setIsOpen(false);
-                }}
-              >
-                Get Started
-              </Button>
-            </div>
+            {!isAuthenticated && (
+              <div className="px-3 py-2 space-y-2">
+                <Button 
+                  variant="outline" 
+                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground w-full"
+                  onClick={() => {
+                    navigate('/login');
+                    setIsOpen(false);
+                  }}
+                >
+                  Login
+                </Button>
+                <Button 
+                  className="tech-button text-foreground w-full"
+                  onClick={() => {
+                    navigate('/login');
+                    setIsOpen(false);
+                  }}
+                >
+                  Get Started
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}

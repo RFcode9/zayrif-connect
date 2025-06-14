@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useRental } from '@/contexts/RentalContext';
 import PaymentButton from './PaymentButton';
 import { PCConfiguration } from '@/services/mockApi';
+import { Play, Pause, Square } from 'lucide-react';
 
 const PCManager: React.FC = () => {
   const { rentals, isLoading, togglePC, refreshRentals } = useRental();
@@ -24,17 +25,17 @@ const PCManager: React.FC = () => {
   };
 
   const formatCurrency = (cents: number) => {
-    return `$${(cents / 100).toFixed(2)}`;
+    return `₹${(cents / 100).toFixed(0)}`;
   };
 
   const calculateTotalCost = (config: PCConfiguration) => {
     const hours = parseInt(config.duration.split(' ')[0]) || 1;
-    return config.hourlyRate * hours * 100; // Convert to cents
+    return config.hourlyRate * hours * 100; // Convert to cents equivalent for INR
   };
 
   if (isLoading) {
     return (
-      <Card className="glass-effect border-primary/20">
+      <Card className="glass-effect border-border/20">
         <CardContent className="p-6 text-center">
           <div className="text-accent">Loading your cloud PCs...</div>
         </CardContent>
@@ -44,12 +45,12 @@ const PCManager: React.FC = () => {
 
   if (rentals.length === 0) {
     return (
-      <Card className="glass-effect border-primary/20">
+      <Card className="glass-effect border-border/20">
         <CardContent className="p-6 text-center">
           <div className="text-muted-foreground mb-4">No cloud PCs deployed yet</div>
           <Button 
             onClick={() => window.location.href = '/customize'}
-            className="bg-accent text-accent-foreground hover:bg-accent/90"
+            className="tech-button text-foreground"
           >
             Deploy Your First PC
           </Button>
@@ -61,7 +62,7 @@ const PCManager: React.FC = () => {
   return (
     <div className="space-y-4">
       {rentals.map((rental) => (
-        <Card key={rental.id} className="glass-effect border-primary/20">
+        <Card key={rental.id} className="glass-effect border-border/20">
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
@@ -98,7 +99,7 @@ const PCManager: React.FC = () => {
 
             <div className="flex gap-2">
               {rental.status === 'running' && (
-                <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                <Button size="sm" className="tech-button text-foreground">
                   Connect
                 </Button>
               )}
@@ -106,11 +107,34 @@ const PCManager: React.FC = () => {
               <Button 
                 size="sm" 
                 variant="outline" 
-                className="border-primary/20"
+                className="border-border/20 tech-button flex items-center gap-2"
                 onClick={() => togglePC(rental.id)}
                 disabled={rental.status === 'deploying'}
               >
-                {rental.status === 'running' ? 'Stop' : 'Start'}
+                {rental.status === 'running' ? (
+                  <>
+                    <Pause className="w-4 h-4" />
+                    Pause
+                  </>
+                ) : rental.status === 'stopped' ? (
+                  <>
+                    <Play className="w-4 h-4" />
+                    Start
+                  </>
+                ) : (
+                  'Deploying...'
+                )}
+              </Button>
+
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="border-border/20 tech-button flex items-center gap-2"
+                onClick={() => togglePC(rental.id)}
+                disabled={rental.status === 'deploying'}
+              >
+                <Square className="w-4 h-4" />
+                Stop
               </Button>
               
               {rental.status === 'available' && (

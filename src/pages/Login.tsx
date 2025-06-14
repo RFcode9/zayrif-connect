@@ -7,22 +7,52 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Navbar from '@/components/Navbar';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login, signup } = useAuth();
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [signupData, setSignupData] = useState({ name: '', email: '', password: '' });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate successful login
-    navigate('/dashboard');
+    setIsLoading(true);
+    try {
+      await login(loginData.email, loginData.password);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Login failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate successful signup
-    navigate('/dashboard');
+    setIsLoading(true);
+    try {
+      await signup(signupData.name, signupData.email, signupData.password);
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Signup failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSocialLogin = async () => {
+    setIsLoading(true);
+    try {
+      // Mock social login
+      await login('user@example.com', 'password');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Social login failed:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -39,13 +69,13 @@ const Login = () => {
             </p>
           </div>
 
-          <Card className="glass-effect border-primary/20">
+          <Card className="glass-effect border-border/20">
             <CardHeader>
               <CardTitle className="text-center text-accent">Account Access</CardTitle>
             </CardHeader>
             <CardContent>
               <Tabs defaultValue="login" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 bg-background border border-primary/20">
+                <TabsList className="grid w-full grid-cols-2 bg-background border border-border/20">
                   <TabsTrigger value="login" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                     Login
                   </TabsTrigger>
@@ -64,7 +94,7 @@ const Login = () => {
                         placeholder="your@email.com"
                         value={loginData.email}
                         onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                        className="bg-background border-primary/20 focus:border-accent"
+                        className="bg-background border-border/20 focus:border-accent"
                         required
                       />
                     </div>
@@ -76,18 +106,22 @@ const Login = () => {
                         placeholder="••••••••"
                         value={loginData.password}
                         onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                        className="bg-background border-primary/20 focus:border-accent"
+                        className="bg-background border-border/20 focus:border-accent"
                         required
                       />
                     </div>
-                    <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                      Login to Dashboard
+                    <Button 
+                      type="submit" 
+                      className="w-full tech-button text-foreground" 
+                      disabled={isLoading}
+                    >
+                      {isLoading ? 'Logging in...' : 'Login to Dashboard'}
                     </Button>
                   </form>
 
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <span className="w-full border-t border-primary/20" />
+                      <span className="w-full border-t border-border/20" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
                       <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
@@ -95,10 +129,20 @@ const Login = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <Button variant="outline" className="border-primary/20 hover:border-accent/50" onClick={() => navigate('/dashboard')}>
+                    <Button 
+                      variant="outline" 
+                      className="border-border/20 hover:border-accent/50" 
+                      onClick={handleSocialLogin}
+                      disabled={isLoading}
+                    >
                       Google
                     </Button>
-                    <Button variant="outline" className="border-primary/20 hover:border-accent/50" onClick={() => navigate('/dashboard')}>
+                    <Button 
+                      variant="outline" 
+                      className="border-border/20 hover:border-accent/50" 
+                      onClick={handleSocialLogin}
+                      disabled={isLoading}
+                    >
                       GitHub
                     </Button>
                   </div>
@@ -114,7 +158,7 @@ const Login = () => {
                         placeholder="John Doe"
                         value={signupData.name}
                         onChange={(e) => setSignupData({ ...signupData, name: e.target.value })}
-                        className="bg-background border-primary/20 focus:border-accent"
+                        className="bg-background border-border/20 focus:border-accent"
                         required
                       />
                     </div>
@@ -126,7 +170,7 @@ const Login = () => {
                         placeholder="your@email.com"
                         value={signupData.email}
                         onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
-                        className="bg-background border-primary/20 focus:border-accent"
+                        className="bg-background border-border/20 focus:border-accent"
                         required
                       />
                     </div>
@@ -138,18 +182,22 @@ const Login = () => {
                         placeholder="••••••••"
                         value={signupData.password}
                         onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
-                        className="bg-background border-primary/20 focus:border-accent"
+                        className="bg-background border-border/20 focus:border-accent"
                         required
                       />
                     </div>
-                    <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                      Create Account
+                    <Button 
+                      type="submit" 
+                      className="w-full tech-button text-foreground"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? 'Creating Account...' : 'Create Account'}
                     </Button>
                   </form>
 
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
-                      <span className="w-full border-t border-primary/20" />
+                      <span className="w-full border-t border-border/20" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
                       <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
@@ -157,10 +205,20 @@ const Login = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <Button variant="outline" className="border-primary/20 hover:border-accent/50" onClick={() => navigate('/dashboard')}>
+                    <Button 
+                      variant="outline" 
+                      className="border-border/20 hover:border-accent/50" 
+                      onClick={handleSocialLogin}
+                      disabled={isLoading}
+                    >
                       Google
                     </Button>
-                    <Button variant="outline" className="border-primary/20 hover:border-accent/50" onClick={() => navigate('/dashboard')}>
+                    <Button 
+                      variant="outline" 
+                      className="border-border/20 hover:border-accent/50" 
+                      onClick={handleSocialLogin}
+                      disabled={isLoading}
+                    >
                       GitHub
                     </Button>
                   </div>

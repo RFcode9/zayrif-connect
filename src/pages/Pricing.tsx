@@ -12,7 +12,7 @@ const Pricing = () => {
     {
       name: "Lite",
       description: "Perfect for students and light usage",
-      price: "$8",
+      price: "₹640",
       period: "per hour",
       features: [
         "GTX 1660 Super GPU",
@@ -22,13 +22,13 @@ const Pricing = () => {
         "1080p Support",
         "Basic Support"
       ],
-      color: "border-primary/20 hover:border-primary/50",
+      color: "border-border/20 hover:border-primary/50",
       buttonStyle: "border-primary text-primary hover:bg-primary hover:text-primary-foreground"
     },
     {
       name: "Creator",
       description: "High-end specs for content creators",
-      price: "$15",
+      price: "₹1,200",
       period: "per hour",
       popular: true,
       features: [
@@ -41,12 +41,12 @@ const Pricing = () => {
         "Adobe Suite Pre-installed"
       ],
       color: "neon-border bg-accent/5",
-      buttonStyle: "bg-accent text-accent-foreground hover:bg-accent/90"
+      buttonStyle: "tech-button text-foreground"
     },
     {
       name: "Pro",
       description: "Ultimate performance for professionals",
-      price: "$25",
+      price: "₹2,000",
       period: "per hour",
       features: [
         "RTX 4090 GPU",
@@ -129,7 +129,7 @@ const Pricing = () => {
           </div>
 
           {/* Custom Configuration */}
-          <Card className="glass-effect border-primary/20 mb-16">
+          <Card className="glass-effect border-border/20 mb-16">
             <CardContent className="p-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div>
@@ -141,7 +141,7 @@ const Pricing = () => {
                     Choose your exact specifications and pay only for the resources you need.
                   </p>
                   <Button 
-                    className="bg-accent text-accent-foreground hover:bg-accent/90"
+                    className="tech-button text-foreground"
                     onClick={() => navigate('/customize')}
                   >
                     Configure Custom PC
@@ -164,7 +164,7 @@ const Pricing = () => {
               Frequently Asked <span className="gradient-text">Questions</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <Card className="glass-effect border-primary/20 text-left">
+              <Card className="glass-effect border-border/20 text-left">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-accent mb-2">How does billing work?</h3>
                   <p className="text-sm text-muted-foreground">
@@ -173,7 +173,7 @@ const Pricing = () => {
                   </p>
                 </CardContent>
               </Card>
-              <Card className="glass-effect border-primary/20 text-left">
+              <Card className="glass-effect border-border/20 text-left">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-accent mb-2">Can I save my work?</h3>
                   <p className="text-sm text-muted-foreground">
@@ -182,7 +182,7 @@ const Pricing = () => {
                   </p>
                 </CardContent>
               </Card>
-              <Card className="glass-effect border-primary/20 text-left">
+              <Card className="glass-effect border-border/20 text-left">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-accent mb-2">What's the minimum usage?</h3>
                   <p className="text-sm text-muted-foreground">
@@ -191,7 +191,7 @@ const Pricing = () => {
                   </p>
                 </CardContent>
               </Card>
-              <Card className="glass-effect border-primary/20 text-left">
+              <Card className="glass-effect border-border/20 text-left">
                 <CardContent className="p-6">
                   <h3 className="font-semibold text-accent mb-2">Enterprise solutions?</h3>
                   <p className="text-sm text-muted-foreground">
