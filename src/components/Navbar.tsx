@@ -30,12 +30,12 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <div 
-              className="font-heading font-bold text-2xl gradient-text cursor-pointer"
+            <img 
+              src="/lovable-uploads/62b62869-4a25-4c9a-93d5-cec677dedc20.png" 
+              alt="Zayrif Connect Logo" 
+              className="h-8 w-auto cursor-pointer"
               onClick={() => navigate('/')}
-            >
-              ZAYRIF CONNECT
-            </div>
+            />
           </div>
           
           <div className="hidden md:block">
