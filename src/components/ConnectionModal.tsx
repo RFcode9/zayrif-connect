@@ -35,16 +35,14 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({ isOpen, onClose, pcCo
   };
 
   const connectViaAnyDesk = () => {
-    // Try to open AnyDesk directly without popup confirmation
+    // Create a hidden link element and click it programmatically
     const anydeskUrl = `anydesk:${anydeskAddress}`;
-    
-    // Use window.open() to avoid popup confirmation
-    const newWindow = window.open(anydeskUrl, '_blank');
-    
-    // If window.open fails, fallback to location.href
-    if (!newWindow) {
-      window.location.href = anydeskUrl;
-    }
+    const link = document.createElement('a');
+    link.href = anydeskUrl;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     
     toast({
       title: "Connecting to PC",
