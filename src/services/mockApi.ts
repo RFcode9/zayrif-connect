@@ -1,4 +1,3 @@
-
 // Mock API service to simulate backend functionality
 export interface PCConfiguration {
   id: string;
@@ -14,6 +13,8 @@ export interface PCConfiguration {
   status: 'available' | 'deploying' | 'running' | 'stopped';
   deployedAt?: string;
   expiresAt?: string;
+  anydeskId?: string;
+  anydeskPassword?: string;
 }
 
 export interface PaymentSession {
@@ -29,14 +30,24 @@ class MockApiService {
   private rentals: PCConfiguration[] = [];
   private paymentSessions: PaymentSession[] = [];
 
+  // Generate AnyDesk credentials
+  private generateAnydeskCredentials() {
+    const anydeskId = Math.floor(100000000 + Math.random() * 900000000).toString();
+    const anydeskPassword = Math.random().toString(36).substring(2, 10);
+    return { anydeskId, anydeskPassword };
+  }
+
   // Simulate PC deployment
   async deployPC(config: Omit<PCConfiguration, 'id' | 'status'>): Promise<PCConfiguration> {
+    const anydeskCredentials = this.generateAnydeskCredentials();
+    
     const deployedPC: PCConfiguration = {
       ...config,
       id: `pc-${Date.now()}`,
       status: 'deploying',
       deployedAt: new Date().toISOString(),
-      expiresAt: this.calculateExpiryTime(config.duration)
+      expiresAt: this.calculateExpiryTime(config.duration),
+      ...anydeskCredentials
     };
 
     this.rentals.push(deployedPC);
@@ -49,12 +60,10 @@ class MockApiService {
     return deployedPC;
   }
 
-  // Get all user rentals
   async getUserRentals(): Promise<PCConfiguration[]> {
     return this.rentals;
   }
 
-  // Start/Stop PC
   async togglePC(pcId: string): Promise<PCConfiguration | null> {
     const pc = this.rentals.find(r => r.id === pcId);
     if (!pc) return null;
@@ -63,7 +72,6 @@ class MockApiService {
     return pc;
   }
 
-  // Create Stripe payment session (mock)
   async createPaymentSession(pcConfig: PCConfiguration): Promise<PaymentSession> {
     const session: PaymentSession = {
       id: `sess_${Date.now()}`,
@@ -78,7 +86,6 @@ class MockApiService {
     return session;
   }
 
-  // Simulate payment completion
   async completePayment(sessionId: string): Promise<PaymentSession | null> {
     const session = this.paymentSessions.find(s => s.id === sessionId);
     if (!session) return null;

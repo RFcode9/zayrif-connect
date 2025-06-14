@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useRental } from '@/contexts/RentalContext';
 import PaymentButton from './PaymentButton';
+import ConnectionModal from './ConnectionModal';
 import { PCConfiguration } from '@/services/mockApi';
-import { Play, Pause, Square, Trash2 } from 'lucide-react';
+import { Play, Pause, Square, Trash2, Monitor } from 'lucide-react';
 
 const PCManager: React.FC = () => {
   const { rentals, isLoading, togglePC, refreshRentals, removePC } = useRental();
+  const [selectedPC, setSelectedPC] = useState<PCConfiguration | null>(null);
+  const [showConnectionModal, setShowConnectionModal] = useState(false);
 
   useEffect(() => {
     refreshRentals();
@@ -29,11 +33,12 @@ const PCManager: React.FC = () => {
 
   const calculateTotalCost = (config: PCConfiguration) => {
     const hours = parseInt(config.duration.split(' ')[0]) || 1;
-    return config.hourlyRate * hours * 100; // Convert to cents equivalent for INR
+    return config.hourlyRate * hours * 100;
   };
 
-  const handleConnect = () => {
-    window.open('/lovable-uploads/f013b7e6-c19c-4035-80a2-104599b5f394.png', '_blank');
+  const handleConnect = (pc: PCConfiguration) => {
+    setSelectedPC(pc);
+    setShowConnectionModal(true);
   };
 
   const handleRemovePC = async (pcId: string) => {
@@ -69,107 +74,118 @@ const PCManager: React.FC = () => {
   }
 
   return (
-    <div className="space-y-4">
-      {rentals.map((rental) => (
-        <Card key={rental.id} className="glass-effect border-border/20">
-          <CardHeader>
-            <div className="flex justify-between items-start">
-              <div>
-                <CardTitle className="text-accent">{rental.name}</CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  {rental.cpu} • {rental.gpu} • {rental.ram}
-                </p>
+    <>
+      <div className="space-y-4">
+        {rentals.map((rental) => (
+          <Card key={rental.id} className="glass-effect border-border/20">
+            <CardHeader>
+              <div className="flex justify-between items-start">
+                <div>
+                  <CardTitle className="text-accent">{rental.name}</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    {rental.cpu} • {rental.gpu} • {rental.ram}
+                  </p>
+                </div>
+                <Badge className={getStatusColor(rental.status)}>
+                  {rental.status}
+                </Badge>
               </div>
-              <Badge className={getStatusColor(rental.status)}>
-                {rental.status}
-              </Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <span className="text-sm text-muted-foreground">Duration:</span>
-                <p className="font-semibold">{rental.duration}</p>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <span className="text-sm text-muted-foreground">Duration:</span>
+                  <p className="font-semibold">{rental.duration}</p>
+                </div>
+                <div>
+                  <span className="text-sm text-muted-foreground">Total Cost:</span>
+                  <p className="font-semibold text-accent">
+                    {formatCurrency(calculateTotalCost(rental))}
+                  </p>
+                </div>
               </div>
-              <div>
-                <span className="text-sm text-muted-foreground">Total Cost:</span>
-                <p className="font-semibold text-accent">
-                  {formatCurrency(calculateTotalCost(rental))}
-                </p>
-              </div>
-            </div>
-            
-            {rental.expiresAt && (
-              <div className="mb-4">
-                <span className="text-sm text-muted-foreground">Expires:</span>
-                <p className="text-sm">{new Date(rental.expiresAt).toLocaleString()}</p>
-              </div>
-            )}
+              
+              {rental.expiresAt && (
+                <div className="mb-4">
+                  <span className="text-sm text-muted-foreground">Expires:</span>
+                  <p className="text-sm">{new Date(rental.expiresAt).toLocaleString()}</p>
+                </div>
+              )}
 
-            <div className="flex gap-2 flex-wrap">
-              {rental.status === 'running' && (
+              <div className="flex gap-2 flex-wrap">
+                {rental.status === 'running' && (
+                  <Button 
+                    size="sm" 
+                    className="tech-button text-foreground flex items-center gap-2"
+                    onClick={() => handleConnect(rental)}
+                  >
+                    <Monitor className="w-4 h-4" />
+                    Connect
+                  </Button>
+                )}
+                
                 <Button 
                   size="sm" 
-                  className="tech-button text-foreground"
-                  onClick={handleConnect}
+                  variant="outline" 
+                  className="border-border/20 tech-button flex items-center gap-2"
+                  onClick={() => togglePC(rental.id)}
+                  disabled={rental.status === 'deploying'}
                 >
-                  Connect
+                  {rental.status === 'running' ? (
+                    <>
+                      <Pause className="w-4 h-4" />
+                      Pause
+                    </>
+                  ) : rental.status === 'stopped' ? (
+                    <>
+                      <Play className="w-4 h-4" />
+                      Start
+                    </>
+                  ) : (
+                    'Deploying...'
+                  )}
                 </Button>
-              )}
-              
-              <Button 
-                size="sm" 
-                variant="outline" 
-                className="border-border/20 tech-button flex items-center gap-2"
-                onClick={() => togglePC(rental.id)}
-                disabled={rental.status === 'deploying'}
-              >
-                {rental.status === 'running' ? (
-                  <>
-                    <Pause className="w-4 h-4" />
-                    Pause
-                  </>
-                ) : rental.status === 'stopped' ? (
-                  <>
-                    <Play className="w-4 h-4" />
-                    Start
-                  </>
-                ) : (
-                  'Deploying...'
+
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="border-border/20 tech-button flex items-center gap-2"
+                  onClick={() => togglePC(rental.id)}
+                  disabled={rental.status === 'deploying'}
+                >
+                  <Square className="w-4 h-4" />
+                  Stop
+                </Button>
+
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="border-destructive/50 hover:bg-destructive hover:text-destructive-foreground tech-button flex items-center gap-2"
+                  onClick={() => handleRemovePC(rental.id)}
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Remove PC
+                </Button>
+                
+                {rental.status === 'available' && (
+                  <PaymentButton pcConfig={rental}>
+                    Pay & Deploy
+                  </PaymentButton>
                 )}
-              </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-              <Button 
-                size="sm" 
-                variant="outline" 
-                className="border-border/20 tech-button flex items-center gap-2"
-                onClick={() => togglePC(rental.id)}
-                disabled={rental.status === 'deploying'}
-              >
-                <Square className="w-4 h-4" />
-                Stop
-              </Button>
-
-              <Button 
-                size="sm" 
-                variant="outline" 
-                className="border-destructive/50 hover:bg-destructive hover:text-destructive-foreground tech-button flex items-center gap-2"
-                onClick={() => handleRemovePC(rental.id)}
-              >
-                <Trash2 className="w-4 h-4" />
-                Remove PC
-              </Button>
-              
-              {rental.status === 'available' && (
-                <PaymentButton pcConfig={rental}>
-                  Pay & Deploy
-                </PaymentButton>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+      {selectedPC && (
+        <ConnectionModal
+          isOpen={showConnectionModal}
+          onClose={() => setShowConnectionModal(false)}
+          pcConfig={selectedPC}
+        />
+      )}
+    </>
   );
 };
 
