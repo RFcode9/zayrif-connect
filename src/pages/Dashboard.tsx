@@ -18,22 +18,8 @@ const Dashboard = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const [rentalHistory] = useState([
-    {
-      id: 3,
-      name: "AI Workstation",
-      date: "2024-01-10",
-      duration: "4h 30m",
-      cost: "₹5,400"
-    },
-    {
-      id: 4,
-      name: "3D Rendering Beast",
-      date: "2024-01-08", 
-      duration: "8h 15m",
-      cost: "₹13,200"
-    }
-  ]);
+  // Show empty state for new users
+  const [rentalHistory] = useState([]);
 
   if (!isAuthenticated || !user) {
     return null;
@@ -105,22 +91,29 @@ const Dashboard = () => {
                 <CardTitle className="text-accent">Recent Activity</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {rentalHistory.map((rental) => (
-                  <div key={rental.id} className="p-4 border border-border/20 rounded-lg tech-button">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-semibold text-foreground">{rental.name}</h3>
-                      <span className="text-sm font-semibold text-accent">{rental.cost}</span>
-                    </div>
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>{rental.date}</span>
-                      <span>{rental.duration}</span>
-                    </div>
+                {rentalHistory.length === 0 ? (
+                  <div className="text-center py-8">
+                    <div className="text-muted-foreground">No recent activity</div>
                   </div>
-                ))}
-                
-                <Button variant="outline" className="w-full border-border/20 hover:border-accent/50">
-                  View Full History
-                </Button>
+                ) : (
+                  <>
+                    {rentalHistory.map((rental) => (
+                      <div key={rental.id} className="p-4 border border-border/20 rounded-lg tech-button">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-semibold text-foreground">{rental.name}</h3>
+                          <span className="text-sm font-semibold text-accent">{rental.cost}</span>
+                        </div>
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span>{rental.date}</span>
+                          <span>{rental.duration}</span>
+                        </div>
+                      </div>
+                    ))}
+                    <Button variant="outline" className="w-full border-border/20 hover:border-accent/50">
+                      View Full History
+                    </Button>
+                  </>
+                )}
               </CardContent>
             </Card>
           </div>
@@ -158,7 +151,7 @@ const Dashboard = () => {
                 </Button>
               </div>
             </CardContent>
-          </Card>
+          </div>
         </div>
       </div>
     </div>

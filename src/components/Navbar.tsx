@@ -59,6 +59,9 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
               <div className="flex items-center space-x-3">
+                <span className="text-sm text-muted-foreground">
+                  Hi, {user?.name?.split(' ')[0]}
+                </span>
                 <Button 
                   variant="ghost"
                   onClick={() => navigate('/profile')}
@@ -115,6 +118,11 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 glass-effect">
+            {isAuthenticated && (
+              <div className="px-3 py-2 text-sm text-muted-foreground border-b border-border/20 mb-2">
+                Hi, {user?.name?.split(' ')[0]}
+              </div>
+            )}
             {currentNavItems.map((item) => (
               <button
                 key={item.name}
@@ -151,6 +159,20 @@ const Navbar = () => {
                   }}
                 >
                   Get Started
+                </Button>
+              </div>
+            )}
+            {isAuthenticated && (
+              <div className="px-3 py-2 space-y-2 border-t border-border/20 mt-2">
+                <Button 
+                  variant="outline" 
+                  className="border-border text-foreground hover:bg-destructive hover:text-destructive-foreground w-full"
+                  onClick={() => {
+                    logout();
+                    setIsOpen(false);
+                  }}
+                >
+                  Logout
                 </Button>
               </div>
             )}

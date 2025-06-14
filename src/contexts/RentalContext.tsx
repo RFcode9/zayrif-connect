@@ -8,6 +8,7 @@ interface RentalContextType {
   isLoading: boolean;
   deployPC: (config: Omit<PCConfiguration, 'id' | 'status'>) => Promise<void>;
   togglePC: (pcId: string) => Promise<void>;
+  removePC: (pcId: string) => Promise<void>;
   refreshRentals: () => Promise<void>;
   createPayment: (pcConfig: PCConfiguration) => Promise<string>;
 }
@@ -69,6 +70,29 @@ export const RentalProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, [refreshRentals, toast]);
 
+  const removePC = useCallback(async (pcId: string) => {
+    try {
+      // Filter out the PC from local state immediately
+      setRentals(currentRentals => currentRentals.filter(rental => rental.id !== pcId));
+      
+      // Simulate API call to remove PC
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      toast({
+        title: "Success",
+        description: "PC removed successfully",
+      });
+    } catch (error) {
+      // Refresh rentals to revert the optimistic update
+      await refreshRentals();
+      toast({
+        title: "Error",
+        description: "Failed to remove PC",
+        variant: "destructive",
+      });
+    }
+  }, [refreshRentals, toast]);
+
   const createPayment = useCallback(async (pcConfig: PCConfiguration): Promise<string> => {
     try {
       const session = await mockApi.createPaymentSession(pcConfig);
@@ -92,6 +116,7 @@ export const RentalProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     isLoading,
     deployPC,
     togglePC,
+    removePC,
     refreshRentals,
     createPayment,
   };

@@ -6,10 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { useRental } from '@/contexts/RentalContext';
 import PaymentButton from './PaymentButton';
 import { PCConfiguration } from '@/services/mockApi';
-import { Play, Pause, Square } from 'lucide-react';
+import { Play, Pause, Square, Trash2 } from 'lucide-react';
 
 const PCManager: React.FC = () => {
-  const { rentals, isLoading, togglePC, refreshRentals } = useRental();
+  const { rentals, isLoading, togglePC, refreshRentals, removePC } = useRental();
 
   useEffect(() => {
     refreshRentals();
@@ -31,6 +31,16 @@ const PCManager: React.FC = () => {
   const calculateTotalCost = (config: PCConfiguration) => {
     const hours = parseInt(config.duration.split(' ')[0]) || 1;
     return config.hourlyRate * hours * 100; // Convert to cents equivalent for INR
+  };
+
+  const handleConnect = () => {
+    window.open('/lovable-uploads/9ec49b06-50d2-4823-b322-21b4827a2fe3.png', '_blank');
+  };
+
+  const handleRemovePC = async (pcId: string) => {
+    if (window.confirm('Are you sure you want to remove this PC? This action cannot be undone.')) {
+      await removePC(pcId);
+    }
   };
 
   if (isLoading) {
@@ -97,9 +107,13 @@ const PCManager: React.FC = () => {
               </div>
             )}
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               {rental.status === 'running' && (
-                <Button size="sm" className="tech-button text-foreground">
+                <Button 
+                  size="sm" 
+                  className="tech-button text-foreground"
+                  onClick={handleConnect}
+                >
                   Connect
                 </Button>
               )}
@@ -135,6 +149,16 @@ const PCManager: React.FC = () => {
               >
                 <Square className="w-4 h-4" />
                 Stop
+              </Button>
+
+              <Button 
+                size="sm" 
+                variant="outline" 
+                className="border-destructive/50 hover:bg-destructive hover:text-destructive-foreground tech-button flex items-center gap-2"
+                onClick={() => handleRemovePC(rental.id)}
+              >
+                <Trash2 className="w-4 h-4" />
+                Remove PC
               </Button>
               
               {rental.status === 'available' && (
