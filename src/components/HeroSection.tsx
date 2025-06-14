@@ -23,9 +23,7 @@ const HeroSection = () => {
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-            Rent, customize, and access high-performance PCs remotely. 
-            Perfect for gamers, video editors, 3D artists, and AI developers. 
-            <span className="text-accent font-semibold"> No hardware costs, unlimited performance.</span>
+            <span className="text-accent font-semibold">No hardware costs, unlimited performance.</span>
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
