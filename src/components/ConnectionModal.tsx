@@ -35,13 +35,20 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({ isOpen, onClose, pcCo
   };
 
   const connectViaAnyDesk = () => {
-    // Try to open AnyDesk with the specific address
+    // Try to open AnyDesk directly without popup confirmation
     const anydeskUrl = `anydesk:${anydeskAddress}`;
-    window.location.href = anydeskUrl;
+    
+    // Use window.open() to avoid popup confirmation
+    const newWindow = window.open(anydeskUrl, '_blank');
+    
+    // If window.open fails, fallback to location.href
+    if (!newWindow) {
+      window.location.href = anydeskUrl;
+    }
     
     toast({
-      title: "Launching AnyDesk",
-      description: "Opening AnyDesk application...",
+      title: "Connecting to PC",
+      description: "Launching AnyDesk and connecting to your cloud PC...",
     });
   };
 
@@ -104,13 +111,13 @@ const ConnectionModal: React.FC<ConnectionModalProps> = ({ isOpen, onClose, pcCo
               className="w-full tech-button text-foreground"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
-              Launch AnyDesk
+              Connect Now
             </Button>
             
             <div className="text-sm text-muted-foreground">
-              <p className="mb-2">Manual connection steps:</p>
+              <p className="mb-2">If automatic connection doesn't work:</p>
               <ol className="list-decimal list-inside space-y-1 text-xs">
-                <li>Open AnyDesk application</li>
+                <li>Open AnyDesk application manually</li>
                 <li>Enter the AnyDesk Address: <code className="bg-muted px-1 rounded">{anydeskAddress}</code></li>
                 <li>Click "Connect"</li>
                 <li>Enter the password when prompted</li>
