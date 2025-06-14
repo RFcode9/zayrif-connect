@@ -7,48 +7,48 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    --background: 0 0% 100%;
     --foreground: 0 0% 15%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 15%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 15%;
-    --primary: 248 67% 63%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 0 81% 59%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 15%;
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
-    --accent: 262 52% 73%;
-    --accent-foreground: 0 0% 15%;
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 0 0% 98%;
+    --accent: 0 81% 59%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 81% 59%;
+    --destructive-foreground: 0 0% 100%;
     --border: 0 0% 90%;
     --input: 0 0% 96%;
-    --ring: 248 67% 63%;
+    --ring: 0 81% 59%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 0 0% 8%;
+    --background: 156 6% 16%;
     --foreground: 0 0% 95%;
-    --card: 0 0% 10%;
+    --card: 156 6% 18%;
     --card-foreground: 0 0% 95%;
-    --popover: 0 0% 8%;
+    --popover: 156 6% 16%;
     --popover-foreground: 0 0% 95%;
-    --primary: 248 67% 63%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 15%;
+    --primary: 0 81% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 156 6% 22%;
     --secondary-foreground: 0 0% 95%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 262 52% 73%;
-    --accent-foreground: 0 0% 15%;
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 20%;
-    --input: 0 0% 15%;
-    --ring: 248 67% 63%;
+    --muted: 156 6% 22%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 0 81% 59%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 81% 59%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 156 6% 25%;
+    --input: 156 6% 22%;
+    --ring: 0 81% 59%;
   }
 }
 
@@ -67,37 +67,42 @@
 
 @layer utilities {
   .gradient-text {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    background: linear-gradient(135deg, #ff3131 0%, #272b2c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
   .glass-effect {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(15px);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(39, 43, 44, 0.1);
+  }
+  
+  .dark .glass-effect {
+    background: rgba(39, 43, 44, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
   
   .tech-button {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 1px solid rgba(99, 102, 241, 0.2);
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 1px solid rgba(39, 43, 44, 0.2);
     transition: all 0.3s ease;
   }
 
   .tech-button:hover {
-    border-color: #6366f1;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+    border-color: #ff3131;
+    box-shadow: 0 4px 12px rgba(255, 49, 49, 0.1);
     transform: translateY(-1px);
   }
 
   .dark .tech-button {
-    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, #272b2c 0%, #363a3b 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
   .dark .tech-button:hover {
-    border-color: #6366f1;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    border-color: #ff3131;
+    box-shadow: 0 4px 12px rgba(255, 49, 49, 0.2);
   }
 }
