@@ -7,10 +7,12 @@ import PCManager from '@/components/PCManager';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useEffect } from 'react';
+import { useRental } from '@/contexts/RentalContext';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
+  const { rentals } = useRental();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -20,6 +22,19 @@ const Dashboard = () => {
 
   // Show empty state for new users
   const [rentalHistory] = useState([]);
+
+  // Calculate dynamic metrics
+  const activePCs = rentals.filter(rental => rental.status === 'running').length;
+  const totalPCs = rentals.length;
+  
+  // Calculate total spent (sum of all PC costs)
+  const totalSpent = rentals.reduce((sum, rental) => {
+    const hours = parseInt(rental.duration.split(' ')[0]) || 1;
+    return sum + (rental.hourlyRate * hours);
+  }, 0);
+
+  // For now, usage hours will be 0 (can be implemented later with actual tracking)
+  const usageHours = 0;
 
   if (!isAuthenticated || !user) {
     return null;
@@ -50,19 +65,19 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card className="glass-effect border-border/20">
               <CardContent className="p-6 text-center">
-                <div className="text-2xl font-bold text-accent">2</div>
+                <div className="text-2xl font-bold text-accent">{totalPCs}</div>
                 <div className="text-sm text-muted-foreground">Active PCs</div>
               </CardContent>
             </Card>
             <Card className="glass-effect border-border/20">
               <CardContent className="p-6 text-center">
-                <div className="text-2xl font-bold text-accent">24.5h</div>
+                <div className="text-2xl font-bold text-accent">{usageHours}H</div>
                 <div className="text-sm text-muted-foreground">This Month</div>
               </CardContent>
             </Card>
             <Card className="glass-effect border-border/20">
               <CardContent className="p-6 text-center">
-                <div className="text-2xl font-bold text-accent">₹38,750</div>
+                <div className="text-2xl font-bold text-accent">₹{totalSpent.toLocaleString()}</div>
                 <div className="text-sm text-muted-foreground">Total Spent</div>
               </CardContent>
             </Card>

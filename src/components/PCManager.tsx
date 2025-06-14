@@ -34,7 +34,7 @@ const PCManager: React.FC = () => {
   };
 
   const handleConnect = () => {
-    window.open('/lovable-uploads/9ec49b06-50d2-4823-b322-21b4827a2fe3.png', '_blank');
+    window.open('/lovable-uploads/f013b7e6-c19c-4035-80a2-104599b5f394.png', '_blank');
   };
 
   const handleRemovePC = async (pcId: string) => {
