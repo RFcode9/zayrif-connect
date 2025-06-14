@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { ThemeToggle } from './ThemeToggle';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,6 +58,7 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
+            <ThemeToggle />
             {isAuthenticated ? (
               <div className="flex items-center space-x-3">
                 <span className="text-sm text-muted-foreground">
@@ -118,11 +120,14 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 glass-effect">
-            {isAuthenticated && (
-              <div className="px-3 py-2 text-sm text-muted-foreground border-b border-border/20 mb-2">
-                Hi, {user?.name?.split(' ')[0]}
-              </div>
-            )}
+            <div className="flex justify-between items-center px-3 py-2 border-b border-border/20 mb-2">
+              {isAuthenticated && (
+                <div className="text-sm text-muted-foreground">
+                  Hi, {user?.name?.split(' ')[0]}
+                </div>
+              )}
+              <ThemeToggle />
+            </div>
             {currentNavItems.map((item) => (
               <button
                 key={item.name}
