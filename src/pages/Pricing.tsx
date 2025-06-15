@@ -56,7 +56,7 @@ const Pricing = () => {
         "Adobe Suite Pre-installed"
       ],
       color: "neon-border bg-accent/5",
-      buttonStyle: "tech-button text-foreground",
+      buttonStyle: "border-accent text-accent hover:bg-accent hover:text-accent-foreground",
       config: {
         cpu: "AMD Ryzen 9 7900X",
         gpu: "NVIDIA RTX 4080",
