@@ -1,4 +1,4 @@
-# 💻 CloudPC Dashboard – Virtual System Deployment Platform
+# 💻 Zayrif Connect
 
 ## 🚀 Project Overview
 
