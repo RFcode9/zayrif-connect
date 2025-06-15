@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,33 +37,33 @@ const Customize = () => {
   ];
 
   const cpuOptions = [
-    { value: 'intel-i7', label: 'Intel Core i7-13700K', price: 56, buyPrice: 45000 },
-    { value: 'intel-i9', label: 'Intel Core i9-13900K', price: 90, buyPrice: 65000 },
-    { value: 'ryzen-7', label: 'AMD Ryzen 7 7800X3D', price: 67, buyPrice: 52000 },
-    { value: 'ryzen-9', label: 'AMD Ryzen 9 7950X', price: 112, buyPrice: 75000 },
-    { value: 'xeon', label: 'Intel Xeon W-3175X', price: 168, buyPrice: 120000 }
+    { value: 'intel-i7', label: 'Intel Core i7-13700K', price: 56, buyPrice: 24750 },
+    { value: 'intel-i9', label: 'Intel Core i9-13900K', price: 90, buyPrice: 35750 },
+    { value: 'ryzen-7', label: 'AMD Ryzen 7 7800X3D', price: 67, buyPrice: 28600 },
+    { value: 'ryzen-9', label: 'AMD Ryzen 9 7950X', price: 112, buyPrice: 41250 },
+    { value: 'xeon', label: 'Intel Xeon W-3175X', price: 168, buyPrice: 66000 }
   ];
 
   const gpuOptions = [
-    { value: 'rtx-3080', label: 'NVIDIA RTX 3080', price: 90, buyPrice: 85000 },
-    { value: 'rtx-4080', label: 'NVIDIA RTX 4080', price: 134, buyPrice: 125000 },
-    { value: 'rtx-4090', label: 'NVIDIA RTX 4090', price: 202, buyPrice: 180000 },
-    { value: 'quadro', label: 'NVIDIA Quadro RTX 8000', price: 280, buyPrice: 250000 },
-    { value: 'rx-7900', label: 'AMD RX 7900 XTX', price: 112, buyPrice: 95000 }
+    { value: 'rtx-3080', label: 'NVIDIA RTX 3080', price: 90, buyPrice: 46750 },
+    { value: 'rtx-4080', label: 'NVIDIA RTX 4080', price: 134, buyPrice: 68750 },
+    { value: 'rtx-4090', label: 'NVIDIA RTX 4090', price: 202, buyPrice: 99000 },
+    { value: 'quadro', label: 'NVIDIA Quadro RTX 8000', price: 280, buyPrice: 137500 },
+    { value: 'rx-7900', label: 'AMD RX 7900 XTX', price: 112, buyPrice: 52250 }
   ];
 
   const ramOptions = [
-    { value: '16gb', label: '16GB DDR5', price: 22, buyPrice: 12000 },
-    { value: '32gb', label: '32GB DDR5', price: 45, buyPrice: 25000 },
-    { value: '64gb', label: '64GB DDR5', price: 90, buyPrice: 48000 },
-    { value: '128gb', label: '128GB DDR5', price: 168, buyPrice: 95000 }
+    { value: '16gb', label: '16GB DDR5', price: 22, buyPrice: 6600 },
+    { value: '32gb', label: '32GB DDR5', price: 45, buyPrice: 13750 },
+    { value: '64gb', label: '64GB DDR5', price: 90, buyPrice: 26400 },
+    { value: '128gb', label: '128GB DDR5', price: 168, buyPrice: 52250 }
   ];
 
   const storageOptions = [
-    { value: '1tb-ssd', label: '1TB NVMe SSD', price: 11, buyPrice: 8500 },
-    { value: '2tb-ssd', label: '2TB NVMe SSD', price: 22, buyPrice: 16000 },
-    { value: '4tb-ssd', label: '4TB NVMe SSD', price: 45, buyPrice: 32000 },
-    { value: '8tb-ssd', label: '8TB NVMe SSD', price: 90, buyPrice: 65000 }
+    { value: '1tb-ssd', label: '1TB NVMe SSD', price: 11, buyPrice: 4675 },
+    { value: '2tb-ssd', label: '2TB NVMe SSD', price: 22, buyPrice: 8800 },
+    { value: '4tb-ssd', label: '4TB NVMe SSD', price: 45, buyPrice: 17600 },
+    { value: '8tb-ssd', label: '8TB NVMe SSD', price: 90, buyPrice: 35750 }
   ];
 
   const updatePrice = (newConfig: typeof config) => {
