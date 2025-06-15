@@ -1,8 +1,9 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import Navbar from '@/components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -14,6 +15,7 @@ const Customize = () => {
   const { deployPC, isLoading } = useRental();
   
   const [config, setConfig] = useState({
+    name: '',
     useCase: '',
     cpu: '',
     gpu: '',
@@ -89,7 +91,7 @@ const Customize = () => {
     if (!isConfigComplete) return;
 
     const pcConfig = {
-      name: `${useCases.find(u => u.value === config.useCase)?.label} PC`,
+      name: config.name, // Use the custom name provided by user
       useCase: config.useCase,
       cpu: cpuOptions.find(c => c.value === config.cpu)?.label || '',
       gpu: gpuOptions.find(g => g.value === config.gpu)?.label || '',
@@ -124,6 +126,25 @@ const Customize = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-6">
+              {/* Configuration Name */}
+              <Card className="glass-effect border-border/20">
+                <CardHeader>
+                  <CardTitle className="text-accent">Configuration Name</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <Label htmlFor="configName">Give your configuration a unique name</Label>
+                    <Input
+                      id="configName"
+                      placeholder="e.g., My Gaming Beast, Work Station Pro, etc."
+                      value={config.name}
+                      onChange={(e) => handleConfigChange('name', e.target.value)}
+                      className="bg-background border-border/20"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Use Case */}
               <Card className="glass-effect border-border/20">
                 <CardHeader>
@@ -284,6 +305,13 @@ const Customize = () => {
                     <div className="text-3xl font-bold text-accent">₹{estimatedPrice}</div>
                     <div className="text-sm text-muted-foreground">per hour</div>
                   </div>
+
+                  {config.name && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Name:</span>
+                      <span className="font-semibold">{config.name}</span>
+                    </div>
+                  )}
 
                   {config.useCase && (
                     <div className="flex justify-between">
