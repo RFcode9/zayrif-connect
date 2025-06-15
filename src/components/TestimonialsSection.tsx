@@ -1,24 +1,23 @@
-
 import { Card, CardContent } from '@/components/ui/card';
 
 const TestimonialsSection = () => {
   const testimonials = [
     {
-      name: "Alex Chen",
+      name: "Arif",
       role: "Content Creator",
       content: "Zayrif Connect revolutionized my workflow. I can edit 4K videos from my laptop while traveling. The performance is incredible!",
       avatar: "🎬",
       rating: 5
     },
     {
-      name: "Sarah Johnson", 
+      name: "Zayed", 
       role: "Game Streamer",
       content: "No more lag, no more hardware upgrades. I stream AAA games at max settings and my audience loves the quality.",
       avatar: "🎮",
       rating: 5
     },
     {
-      name: "Marcus Rodriguez",
+      name: "Aditya",
       role: "AI Researcher", 
       content: "Training deep learning models on Zayrif Connect is a game-changer. The GPU power is unmatched and cost-effective.",
       avatar: "🤖",
