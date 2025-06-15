@@ -139,7 +139,7 @@ const Pricing = () => {
           {/* Header */}
           <div className="text-center mb-16">
             <h1 className="font-heading text-4xl md:text-5xl font-bold mb-6">
-              Simple, <span className="gradient-text">Transparent Pricing</span>
+              <span className="gradient-text">Quick Buy</span> Cloud PCs
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Purchase your perfect cloud PC with no hidden fees, no long-term contracts. 
