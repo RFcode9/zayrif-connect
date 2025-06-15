@@ -21,7 +21,7 @@ const Pricing = () => {
     {
       name: "Lite",
       description: "Perfect for students and light usage",
-      price: "₹45,000",
+      price: "₹40,500",
       period: "one-time purchase",
       features: [
         "GTX 1660 Super GPU",
@@ -43,7 +43,7 @@ const Pricing = () => {
     {
       name: "Creator",
       description: "High-end specs for content creators",
-      price: "₹120,000",
+      price: "₹108,000",
       period: "one-time purchase",
       popular: true,
       features: [
@@ -67,7 +67,7 @@ const Pricing = () => {
     {
       name: "Pro",
       description: "Ultimate performance for professionals",
-      price: "₹200,000",
+      price: "₹180,000",
       period: "one-time purchase",
       features: [
         "RTX 4090 GPU",
