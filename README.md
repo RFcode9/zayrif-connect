@@ -1,73 +1,103 @@
-# Welcome to your Lovable project
+# 💻 CloudPC Dashboard – Virtual System Deployment Platform
 
-## Project info
+## 🚀 Project Overview
 
-**URL**: https://lovable.dev/projects/2ec2b226-e191-466b-a006-7f268667b63e
+**CloudPC Dashboard** is a web-based platform that allows users to create and manage virtual PCs with different hardware configurations (low-end and high-end) directly from their browser. The app offers real-time deployment controls such as **Start**, **Pause**, **Stop**, and **Connect**, simulating how modern cloud computing platforms operate.
 
-## How can I edit this code?
+This project is built with modern web technologies and demonstrates a prototype for a **cloud gaming / cloud computing** service similar to platforms like AWS EC2 or Hack The Box — showcasing both frontend interface and simulated SSH/GUI connections.
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## ✨ Features
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/2ec2b226-e191-466b-a006-7f268667b63e) and start prompting.
+- 🔐 **Authentication System** (Login / Signup)
+- 📂 **Dashboard with System Instances**
+  - Displays all your deployed PCs
+  - Shows system specs like RAM, Storage, GPU
+- ⚙️ **PC Configuration Tool**
+  - Build your own virtual machine with preferred hardware
+- 🎮 **Connect to PC**
+  - Simulated via AnyDesk demo or future SSH integration
+- 🖥️ **PC Controls**
+  - Start / Pause / Stop / Remove PC from Dashboard
+- 📈 **Live Usage Stats**
+  - Tracks total hours used and total spend
+- 🌗 **Dark Tech-Themed UI**
+  - Inspired by gaming dashboards, with a modern UI/UX
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## 🏗️ Tech Stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+| Tech          | Usage                     |
+|---------------|---------------------------|
+| **React.js**  | UI Framework              |
+| **TypeScript**| Strongly typed JS         |
+| **Tailwind CSS** | UI styling             |
+| **ShadCN UI** | Component Library         |
+| **Vite**      | Lightning-fast build tool |
+| **Context API** | State management        |
+| **Mock APIs** | Simulate backend behavior |
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## 📁 Folder Structure
+/src
+/components → Reusable UI Components
+/pages → Dashboard, Login, Signup, Customize
+/services → Mock API Logic (Instance creation, etc.)
+/context → State and PC management
+/assets → Icons and images
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🧪 Demonstrated Functionalities
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+- ✅ Low & High Config PC Management
+- ✅ Live PC instance simulation with stats
+- ✅ Secure login with profile viewing
+- ✅ Simulated SSH GUI using AnyDesk modal
+- ✅ Dark mode and responsive design
+
+---
+
+## 🔧 Setup Instructions
+
+### Prerequisites:
+- Node.js & npm installed  
+  (Install via [nvm](https://github.com/nvm-sh/nvm))
+
+---
+
+### 🛠️ Local Development Setup:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/your-username/cloudpc-dashboard.git
+
+# 2. Navigate into the project folder
+cd cloudpc-dashboard
+
+# 3. Install dependencies
+npm install
+
+# 4. Run the development server
 npm run dev
-```
 
-**Edit a file directly in GitHub**
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
 
-**Use GitHub Codespaces**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+🌐 Future Scope
+🔐 Real SSH instance deployment (via cloud VMs)
 
-## What technologies are used for this project?
+🧠 Role-based access control (Admin/User)
 
-This project is built with:
+💳 Stripe payment integration for plans
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+📊 Detailed usage analytics & billing dashboard
 
-## How can I deploy this project?
+📦 Cloud provider API (AWS/GCP integration)
 
-Simply open [Lovable](https://lovable.dev/projects/2ec2b226-e191-466b-a006-7f268667b63e) and click on Share -> Publish.
+🌍 Global infrastructure support
 
-## Can I connect a custom domain to my Lovable project?
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
