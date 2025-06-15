@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import Navbar from '@/components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -22,7 +23,8 @@ const Customize = () => {
     gpu: '',
     ram: '',
     storage: '',
-    duration: ''
+    duration: '',
+    purchaseType: 'rent' // 'rent' or 'buy'
   });
 
   const [estimatedPrice, setEstimatedPrice] = useState(0);
@@ -36,46 +38,54 @@ const Customize = () => {
   ];
 
   const cpuOptions = [
-    { value: 'intel-i7', label: 'Intel Core i7-13700K', price: 56 }, // Reduced by 86%
-    { value: 'intel-i9', label: 'Intel Core i9-13900K', price: 90 }, // Reduced by 86%
-    { value: 'ryzen-7', label: 'AMD Ryzen 7 7800X3D', price: 67 }, // Reduced by 86%
-    { value: 'ryzen-9', label: 'AMD Ryzen 9 7950X', price: 112 }, // Reduced by 86%
-    { value: 'xeon', label: 'Intel Xeon W-3175X', price: 168 } // Reduced by 86%
+    { value: 'intel-i7', label: 'Intel Core i7-13700K', price: 56, buyPrice: 45000 },
+    { value: 'intel-i9', label: 'Intel Core i9-13900K', price: 90, buyPrice: 65000 },
+    { value: 'ryzen-7', label: 'AMD Ryzen 7 7800X3D', price: 67, buyPrice: 52000 },
+    { value: 'ryzen-9', label: 'AMD Ryzen 9 7950X', price: 112, buyPrice: 75000 },
+    { value: 'xeon', label: 'Intel Xeon W-3175X', price: 168, buyPrice: 120000 }
   ];
 
   const gpuOptions = [
-    { value: 'rtx-3080', label: 'NVIDIA RTX 3080', price: 90 }, // Reduced by 86%
-    { value: 'rtx-4080', label: 'NVIDIA RTX 4080', price: 134 }, // Reduced by 86%
-    { value: 'rtx-4090', label: 'NVIDIA RTX 4090', price: 202 }, // Reduced by 86%
-    { value: 'quadro', label: 'NVIDIA Quadro RTX 8000', price: 280 }, // Reduced by 86%
-    { value: 'rx-7900', label: 'AMD RX 7900 XTX', price: 112 } // Reduced by 86%
+    { value: 'rtx-3080', label: 'NVIDIA RTX 3080', price: 90, buyPrice: 85000 },
+    { value: 'rtx-4080', label: 'NVIDIA RTX 4080', price: 134, buyPrice: 125000 },
+    { value: 'rtx-4090', label: 'NVIDIA RTX 4090', price: 202, buyPrice: 180000 },
+    { value: 'quadro', label: 'NVIDIA Quadro RTX 8000', price: 280, buyPrice: 250000 },
+    { value: 'rx-7900', label: 'AMD RX 7900 XTX', price: 112, buyPrice: 95000 }
   ];
 
   const ramOptions = [
-    { value: '16gb', label: '16GB DDR5', price: 22 }, // Reduced by 86%
-    { value: '32gb', label: '32GB DDR5', price: 45 }, // Reduced by 86%
-    { value: '64gb', label: '64GB DDR5', price: 90 }, // Reduced by 86%
-    { value: '128gb', label: '128GB DDR5', price: 168 } // Reduced by 86%
+    { value: '16gb', label: '16GB DDR5', price: 22, buyPrice: 12000 },
+    { value: '32gb', label: '32GB DDR5', price: 45, buyPrice: 25000 },
+    { value: '64gb', label: '64GB DDR5', price: 90, buyPrice: 48000 },
+    { value: '128gb', label: '128GB DDR5', price: 168, buyPrice: 95000 }
   ];
 
   const storageOptions = [
-    { value: '1tb-ssd', label: '1TB NVMe SSD', price: 11 }, // Reduced by 86%
-    { value: '2tb-ssd', label: '2TB NVMe SSD', price: 22 }, // Reduced by 86%
-    { value: '4tb-ssd', label: '4TB NVMe SSD', price: 45 }, // Reduced by 86%
-    { value: '8tb-ssd', label: '8TB NVMe SSD', price: 90 } // Reduced by 86%
+    { value: '1tb-ssd', label: '1TB NVMe SSD', price: 11, buyPrice: 8500 },
+    { value: '2tb-ssd', label: '2TB NVMe SSD', price: 22, buyPrice: 16000 },
+    { value: '4tb-ssd', label: '4TB NVMe SSD', price: 45, buyPrice: 32000 },
+    { value: '8tb-ssd', label: '8TB NVMe SSD', price: 90, buyPrice: 65000 }
   ];
 
   const updatePrice = (newConfig: typeof config) => {
-    const cpu = cpuOptions.find(c => c.value === newConfig.cpu)?.price || 0;
-    const gpu = gpuOptions.find(g => g.value === newConfig.gpu)?.price || 0;
-    const ram = ramOptions.find(r => r.value === newConfig.ram)?.price || 0;
-    const storage = storageOptions.find(s => s.value === newConfig.storage)?.price || 0;
+    const cpu = cpuOptions.find(c => c.value === newConfig.cpu);
+    const gpu = gpuOptions.find(g => g.value === newConfig.gpu);
+    const ram = ramOptions.find(r => r.value === newConfig.ram);
+    const storage = storageOptions.find(s => s.value === newConfig.storage);
     
-    setEstimatedPrice(cpu + gpu + ram + storage);
+    if (newConfig.purchaseType === 'buy') {
+      const buyPrice = (cpu?.buyPrice || 0) + (gpu?.buyPrice || 0) + (ram?.buyPrice || 0) + (storage?.buyPrice || 0);
+      setEstimatedPrice(buyPrice);
+    } else {
+      const rentPrice = (cpu?.price || 0) + (gpu?.price || 0) + (ram?.price || 0) + (storage?.price || 0);
+      setEstimatedPrice(rentPrice);
+    }
   };
 
-  // Calculate total cost based on duration
   const calculateTotalCost = () => {
+    if (config.purchaseType === 'buy') {
+      return estimatedPrice; // One-time purchase price
+    }
     if (!config.duration) return estimatedPrice;
     const hours = parseInt(config.duration.split(' ')[0]) || 1;
     return estimatedPrice * hours;
@@ -87,7 +97,8 @@ const Customize = () => {
     updatePrice(newConfig);
   };
 
-  const isConfigComplete = config.name && config.useCase && config.cpu && config.gpu && config.ram && config.storage && config.duration;
+  const isConfigComplete = config.name && config.useCase && config.cpu && config.gpu && config.ram && config.storage && 
+    (config.purchaseType === 'buy' || config.duration);
 
   const handleDeploy = async () => {
     if (!isAuthenticated) {
@@ -104,9 +115,9 @@ const Customize = () => {
       gpu: gpuOptions.find(g => g.value === config.gpu)?.label || '',
       ram: ramOptions.find(r => r.value === config.ram)?.label || '',
       storage: storageOptions.find(s => s.value === config.storage)?.label || '',
-      resolution: '1080p', // Default resolution since we removed the option
-      duration: config.duration, // Use the actual selected duration
-      hourlyRate: estimatedPrice,
+      resolution: '1080p',
+      duration: config.purchaseType === 'buy' ? 'Purchased' : config.duration,
+      hourlyRate: config.purchaseType === 'buy' ? calculateTotalCost() : estimatedPrice,
     };
 
     try {
@@ -152,6 +163,35 @@ const Customize = () => {
                 </CardContent>
               </Card>
 
+              {/* Purchase Type Selection */}
+              <Card className="glass-effect border-border/20">
+                <CardHeader>
+                  <CardTitle className="text-accent">Choose Your Option</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <RadioGroup
+                    value={config.purchaseType}
+                    onValueChange={(value) => handleConfigChange('purchaseType', value)}
+                    className="grid grid-cols-2 gap-4"
+                  >
+                    <div className="flex items-center space-x-2 p-4 rounded-lg border-2 border-border/20 hover:border-accent/50 transition-colors">
+                      <RadioGroupItem value="rent" id="rent" />
+                      <Label htmlFor="rent" className="cursor-pointer">
+                        <div className="font-semibold">Rent PC</div>
+                        <div className="text-sm text-muted-foreground">Pay per hour usage</div>
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2 p-4 rounded-lg border-2 border-border/20 hover:border-accent/50 transition-colors">
+                      <RadioGroupItem value="buy" id="buy" />
+                      <Label htmlFor="buy" className="cursor-pointer">
+                        <div className="font-semibold">Buy PC</div>
+                        <div className="text-sm text-muted-foreground">One-time purchase</div>
+                      </Label>
+                    </div>
+                  </RadioGroup>
+                </CardContent>
+              </Card>
+
               {/* Use Case */}
               <Card className="glass-effect border-border/20">
                 <CardHeader>
@@ -191,7 +231,7 @@ const Customize = () => {
                       <SelectContent>
                         {cpuOptions.map((cpu) => (
                           <SelectItem key={cpu.value} value={cpu.value}>
-                            {cpu.label} (+₹{cpu.price}/hr)
+                            {cpu.label} ({config.purchaseType === 'buy' ? `₹${cpu.buyPrice}` : `+₹${cpu.price}/hr`})
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -211,7 +251,7 @@ const Customize = () => {
                       <SelectContent>
                         {gpuOptions.map((gpu) => (
                           <SelectItem key={gpu.value} value={gpu.value}>
-                            {gpu.label} (+₹{gpu.price}/hr)
+                            {gpu.label} ({config.purchaseType === 'buy' ? `₹${gpu.buyPrice}` : `+₹${gpu.price}/hr`})
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -231,7 +271,7 @@ const Customize = () => {
                       <SelectContent>
                         {ramOptions.map((ram) => (
                           <SelectItem key={ram.value} value={ram.value}>
-                            {ram.label} (+₹{ram.price}/hr)
+                            {ram.label} ({config.purchaseType === 'buy' ? `₹${ram.buyPrice}` : `+₹${ram.price}/hr`})
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -251,7 +291,7 @@ const Customize = () => {
                       <SelectContent>
                         {storageOptions.map((storage) => (
                           <SelectItem key={storage.value} value={storage.value}>
-                            {storage.label} (+₹{storage.price}/hr)
+                            {storage.label} ({config.purchaseType === 'buy' ? `₹${storage.buyPrice}` : `+₹${storage.price}/hr`})
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -260,25 +300,27 @@ const Customize = () => {
                 </Card>
               </div>
 
-              {/* Rental Duration */}
-              <Card className="glass-effect border-border/20">
-                <CardHeader>
-                  <CardTitle className="text-accent">Rental Duration</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Select onValueChange={(value) => handleConfigChange('duration', value)}>
-                    <SelectTrigger className="bg-background border-border/20">
-                      <SelectValue placeholder="Select Duration" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1 hour">1 Hour</SelectItem>
-                      <SelectItem value="4 hours">4 Hours</SelectItem>
-                      <SelectItem value="8 hours">8 Hours</SelectItem>
-                      <SelectItem value="24 hours">24 Hours</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </CardContent>
-              </Card>
+              {/* Rental Duration - Only show for rent option */}
+              {config.purchaseType === 'rent' && (
+                <Card className="glass-effect border-border/20">
+                  <CardHeader>
+                    <CardTitle className="text-accent">Rental Duration</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Select onValueChange={(value) => handleConfigChange('duration', value)}>
+                      <SelectTrigger className="bg-background border-border/20">
+                        <SelectValue placeholder="Select Duration" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1 hour">1 Hour</SelectItem>
+                        <SelectItem value="4 hours">4 Hours</SelectItem>
+                        <SelectItem value="8 hours">8 Hours</SelectItem>
+                        <SelectItem value="24 hours">24 Hours</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </CardContent>
+                </Card>
+              )}
             </div>
 
             {/* Configuration Summary */}
@@ -289,12 +331,21 @@ const Customize = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="text-center mb-6">
-                    <div className="text-2xl font-bold text-accent">₹{estimatedPrice}</div>
-                    <div className="text-xs text-muted-foreground">per hour</div>
-                    {config.duration && (
+                    {config.purchaseType === 'buy' ? (
                       <>
-                        <div className="text-3xl font-bold text-primary mt-2">₹{calculateTotalCost()}</div>
-                        <div className="text-sm text-muted-foreground">total cost</div>
+                        <div className="text-3xl font-bold text-primary">₹{estimatedPrice.toLocaleString()}</div>
+                        <div className="text-sm text-muted-foreground">one-time purchase</div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-2xl font-bold text-accent">₹{estimatedPrice}</div>
+                        <div className="text-xs text-muted-foreground">per hour</div>
+                        {config.duration && (
+                          <>
+                            <div className="text-3xl font-bold text-primary mt-2">₹{calculateTotalCost()}</div>
+                            <div className="text-sm text-muted-foreground">total cost</div>
+                          </>
+                        )}
                       </>
                     )}
                   </div>
@@ -303,6 +354,13 @@ const Customize = () => {
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Name:</span>
                       <span className="font-semibold">{config.name}</span>
+                    </div>
+                  )}
+
+                  {config.purchaseType && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Type:</span>
+                      <span>{config.purchaseType === 'buy' ? 'Purchase' : 'Rental'}</span>
                     </div>
                   )}
 
@@ -341,7 +399,7 @@ const Customize = () => {
                     </div>
                   )}
 
-                  {config.duration && (
+                  {config.duration && config.purchaseType === 'rent' && (
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Duration:</span>
                       <span>{config.duration}</span>
@@ -353,12 +411,12 @@ const Customize = () => {
                     disabled={!isConfigComplete || isLoading}
                     onClick={handleDeploy}
                   >
-                    {isLoading ? 'Deploying...' : isConfigComplete ? 'Deploy Configuration' : 'Complete Configuration'}
+                    {isLoading ? 'Processing...' : isConfigComplete ? (config.purchaseType === 'buy' ? 'Purchase Configuration' : 'Deploy Configuration') : 'Complete Configuration'}
                   </Button>
 
                   {isConfigComplete && !isAuthenticated && (
                     <p className="text-xs text-muted-foreground text-center">
-                      Login required to deploy your PC
+                      Login required to {config.purchaseType === 'buy' ? 'purchase' : 'deploy'} your PC
                     </p>
                   )}
                 </CardContent>
