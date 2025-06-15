@@ -74,6 +74,13 @@ const Customize = () => {
     setEstimatedPrice(cpu + gpu + ram + storage);
   };
 
+  // Calculate total cost based on duration
+  const calculateTotalCost = () => {
+    if (!config.duration) return estimatedPrice;
+    const hours = parseInt(config.duration.split(' ')[0]) || 1;
+    return estimatedPrice * hours;
+  };
+
   const handleConfigChange = (key: string, value: string) => {
     const newConfig = { ...config, [key]: value };
     setConfig(newConfig);
@@ -302,8 +309,14 @@ const Customize = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="text-center mb-6">
-                    <div className="text-3xl font-bold text-accent">₹{estimatedPrice}</div>
-                    <div className="text-sm text-muted-foreground">per hour</div>
+                    <div className="text-2xl font-bold text-accent">₹{estimatedPrice}</div>
+                    <div className="text-xs text-muted-foreground">per hour</div>
+                    {config.duration && (
+                      <>
+                        <div className="text-3xl font-bold text-primary mt-2">₹{calculateTotalCost()}</div>
+                        <div className="text-sm text-muted-foreground">total cost</div>
+                      </>
+                    )}
                   </div>
 
                   {config.name && (
@@ -345,6 +358,13 @@ const Customize = () => {
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Storage:</span>
                       <span>{storageOptions.find(s => s.value === config.storage)?.label}</span>
+                    </div>
+                  )}
+
+                  {config.duration && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Duration:</span>
+                      <span>{config.duration}</span>
                     </div>
                   )}
 

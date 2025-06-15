@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,7 +26,7 @@ const Dashboard = () => {
   const activePCs = rentals.filter(rental => rental.status === 'running').length;
   const totalPCs = rentals.length;
   
-  // Calculate total spent (sum of all PC costs)
+  // Calculate total spent (sum of all PC costs based on hourly rate * duration)
   const totalSpent = rentals.reduce((sum, rental) => {
     const hours = parseInt(rental.duration.split(' ')[0]) || 1;
     return sum + (rental.hourlyRate * hours);

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -33,7 +32,7 @@ const PCManager: React.FC = () => {
 
   const calculateTotalCost = (config: PCConfiguration) => {
     const hours = parseInt(config.duration.split(' ')[0]) || 1;
-    return config.hourlyRate * hours * 100;
+    return config.hourlyRate * hours;
   };
 
   const handleConnect = (pc: PCConfiguration) => {
@@ -100,7 +99,7 @@ const PCManager: React.FC = () => {
                 <div>
                   <span className="text-sm text-muted-foreground">Total Cost:</span>
                   <p className="font-semibold text-accent">
-                    {formatCurrency(calculateTotalCost(rental))}
+                    ₹{calculateTotalCost(rental)}
                   </p>
                 </div>
               </div>
