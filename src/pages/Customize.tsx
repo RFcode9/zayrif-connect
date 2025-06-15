@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,7 +22,6 @@ const Customize = () => {
     gpu: '',
     ram: '',
     storage: '',
-    resolution: '',
     duration: ''
   });
 
@@ -36,33 +36,33 @@ const Customize = () => {
   ];
 
   const cpuOptions = [
-    { value: 'intel-i7', label: 'Intel Core i7-13700K', price: 400 },
-    { value: 'intel-i9', label: 'Intel Core i9-13900K', price: 640 },
-    { value: 'ryzen-7', label: 'AMD Ryzen 7 7800X3D', price: 480 },
-    { value: 'ryzen-9', label: 'AMD Ryzen 9 7950X', price: 800 },
-    { value: 'xeon', label: 'Intel Xeon W-3175X', price: 1200 }
+    { value: 'intel-i7', label: 'Intel Core i7-13700K', price: 56 }, // Reduced by 86%
+    { value: 'intel-i9', label: 'Intel Core i9-13900K', price: 90 }, // Reduced by 86%
+    { value: 'ryzen-7', label: 'AMD Ryzen 7 7800X3D', price: 67 }, // Reduced by 86%
+    { value: 'ryzen-9', label: 'AMD Ryzen 9 7950X', price: 112 }, // Reduced by 86%
+    { value: 'xeon', label: 'Intel Xeon W-3175X', price: 168 } // Reduced by 86%
   ];
 
   const gpuOptions = [
-    { value: 'rtx-3080', label: 'NVIDIA RTX 3080', price: 640 },
-    { value: 'rtx-4080', label: 'NVIDIA RTX 4080', price: 960 },
-    { value: 'rtx-4090', label: 'NVIDIA RTX 4090', price: 1440 },
-    { value: 'quadro', label: 'NVIDIA Quadro RTX 8000', price: 2000 },
-    { value: 'rx-7900', label: 'AMD RX 7900 XTX', price: 800 }
+    { value: 'rtx-3080', label: 'NVIDIA RTX 3080', price: 90 }, // Reduced by 86%
+    { value: 'rtx-4080', label: 'NVIDIA RTX 4080', price: 134 }, // Reduced by 86%
+    { value: 'rtx-4090', label: 'NVIDIA RTX 4090', price: 202 }, // Reduced by 86%
+    { value: 'quadro', label: 'NVIDIA Quadro RTX 8000', price: 280 }, // Reduced by 86%
+    { value: 'rx-7900', label: 'AMD RX 7900 XTX', price: 112 } // Reduced by 86%
   ];
 
   const ramOptions = [
-    { value: '16gb', label: '16GB DDR5', price: 160 },
-    { value: '32gb', label: '32GB DDR5', price: 320 },
-    { value: '64gb', label: '64GB DDR5', price: 640 },
-    { value: '128gb', label: '128GB DDR5', price: 1200 }
+    { value: '16gb', label: '16GB DDR5', price: 22 }, // Reduced by 86%
+    { value: '32gb', label: '32GB DDR5', price: 45 }, // Reduced by 86%
+    { value: '64gb', label: '64GB DDR5', price: 90 }, // Reduced by 86%
+    { value: '128gb', label: '128GB DDR5', price: 168 } // Reduced by 86%
   ];
 
   const storageOptions = [
-    { value: '1tb-ssd', label: '1TB NVMe SSD', price: 80 },
-    { value: '2tb-ssd', label: '2TB NVMe SSD', price: 160 },
-    { value: '4tb-ssd', label: '4TB NVMe SSD', price: 320 },
-    { value: '8tb-ssd', label: '8TB NVMe SSD', price: 640 }
+    { value: '1tb-ssd', label: '1TB NVMe SSD', price: 11 }, // Reduced by 86%
+    { value: '2tb-ssd', label: '2TB NVMe SSD', price: 22 }, // Reduced by 86%
+    { value: '4tb-ssd', label: '4TB NVMe SSD', price: 45 }, // Reduced by 86%
+    { value: '8tb-ssd', label: '8TB NVMe SSD', price: 90 } // Reduced by 86%
   ];
 
   const updatePrice = (newConfig: typeof config) => {
@@ -87,7 +87,7 @@ const Customize = () => {
     updatePrice(newConfig);
   };
 
-  const isConfigComplete = Object.values(config).every(value => value !== '');
+  const isConfigComplete = config.name && config.useCase && config.cpu && config.gpu && config.ram && config.storage && config.duration;
 
   const handleDeploy = async () => {
     if (!isAuthenticated) {
@@ -104,7 +104,7 @@ const Customize = () => {
       gpu: gpuOptions.find(g => g.value === config.gpu)?.label || '',
       ram: ramOptions.find(r => r.value === config.ram)?.label || '',
       storage: storageOptions.find(s => s.value === config.storage)?.label || '',
-      resolution: config.resolution,
+      resolution: '1080p', // Default resolution since we removed the option
       duration: config.duration, // Use the actual selected duration
       hourlyRate: estimatedPrice,
     };
@@ -260,45 +260,25 @@ const Customize = () => {
                 </Card>
               </div>
 
-              {/* Additional Options */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="glass-effect border-border/20">
-                  <CardHeader>
-                    <CardTitle className="text-accent">Resolution Support</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Select onValueChange={(value) => handleConfigChange('resolution', value)}>
-                      <SelectTrigger className="bg-background border-border/20">
-                        <SelectValue placeholder="Select Resolution" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1080p">Full HD (1080p)</SelectItem>
-                        <SelectItem value="1440p">2K (1440p)</SelectItem>
-                        <SelectItem value="4k">4K (2160p)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </CardContent>
-                </Card>
-
-                <Card className="glass-effect border-border/20">
-                  <CardHeader>
-                    <CardTitle className="text-accent">Rental Duration</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Select onValueChange={(value) => handleConfigChange('duration', value)}>
-                      <SelectTrigger className="bg-background border-border/20">
-                        <SelectValue placeholder="Select Duration" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1 hour">1 Hour</SelectItem>
-                        <SelectItem value="4 hours">4 Hours</SelectItem>
-                        <SelectItem value="8 hours">8 Hours</SelectItem>
-                        <SelectItem value="24 hours">24 Hours</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </CardContent>
-                </Card>
-              </div>
+              {/* Rental Duration */}
+              <Card className="glass-effect border-border/20">
+                <CardHeader>
+                  <CardTitle className="text-accent">Rental Duration</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Select onValueChange={(value) => handleConfigChange('duration', value)}>
+                    <SelectTrigger className="bg-background border-border/20">
+                      <SelectValue placeholder="Select Duration" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1 hour">1 Hour</SelectItem>
+                      <SelectItem value="4 hours">4 Hours</SelectItem>
+                      <SelectItem value="8 hours">8 Hours</SelectItem>
+                      <SelectItem value="24 hours">24 Hours</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Configuration Summary */}
