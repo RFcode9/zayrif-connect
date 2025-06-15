@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,7 +11,7 @@ const Pricing = () => {
     {
       name: "Lite",
       description: "Perfect for students and light usage",
-      price: "₹640",
+      price: "₹90",
       period: "per hour",
       features: [
         "GTX 1660 Super GPU",
@@ -28,7 +27,7 @@ const Pricing = () => {
     {
       name: "Creator",
       description: "High-end specs for content creators",
-      price: "₹1,200",
+      price: "₹168",
       period: "per hour",
       popular: true,
       features: [
@@ -46,7 +45,7 @@ const Pricing = () => {
     {
       name: "Pro",
       description: "Ultimate performance for professionals",
-      price: "₹2,000",
+      price: "₹280",
       period: "per hour",
       features: [
         "RTX 4090 GPU",
