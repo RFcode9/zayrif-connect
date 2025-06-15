@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -29,7 +28,7 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 w-full z-50 glass-effect border-b border-border/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
             <img 
               src="/lovable-uploads/62b62869-4a25-4c9a-93d5-cec677dedc20.png" 
