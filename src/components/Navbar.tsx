@@ -34,7 +34,7 @@ const Navbar = () => {
             <img 
               src="/lovable-uploads/62b62869-4a25-4c9a-93d5-cec677dedc20.png" 
               alt="Zayrif Connect Logo" 
-              className="h-14 w-auto cursor-pointer"
+              className="h-16 w-auto cursor-pointer"
               onClick={() => navigate('/')}
             />
           </div>
