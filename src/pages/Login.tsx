@@ -103,7 +103,7 @@ const Login = () => {
                       <Input
                         id="login-password"
                         type="password"
-                        placeholder="••••••••"
+                        placeholder="Enter Password"
                         value={loginData.password}
                         onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                         className="bg-background border-border/20 focus:border-accent"
@@ -179,7 +179,7 @@ const Login = () => {
                       <Input
                         id="signup-password"
                         type="password"
-                        placeholder="••••••••"
+                        placeholder="Enter Password"
                         value={signupData.password}
                         onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
                         className="bg-background border-border/20 focus:border-accent"
