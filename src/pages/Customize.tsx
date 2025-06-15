@@ -98,14 +98,14 @@ const Customize = () => {
     if (!isConfigComplete) return;
 
     const pcConfig = {
-      name: config.name, // Use the custom name provided by user
+      name: config.name,
       useCase: config.useCase,
       cpu: cpuOptions.find(c => c.value === config.cpu)?.label || '',
       gpu: gpuOptions.find(g => g.value === config.gpu)?.label || '',
       ram: ramOptions.find(r => r.value === config.ram)?.label || '',
       storage: storageOptions.find(s => s.value === config.storage)?.label || '',
       resolution: config.resolution,
-      duration: '1 hour',
+      duration: config.duration, // Use the actual selected duration
       hourlyRate: estimatedPrice,
     };
 
