@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { PCConfiguration, PaymentSession, mockApi } from '@/services/mockApi';
 import { useToast } from '@/hooks/use-toast';
@@ -6,7 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 interface RentalContextType {
   rentals: PCConfiguration[];
   isLoading: boolean;
-  deployPC: (config: Omit<PCConfiguration, 'id' | 'status'>) => Promise<void>;
+  deployPC: (config: Omit<PCConfiguration, 'id' | 'status'>) => Promise<PCConfiguration>;
   togglePC: (pcId: string) => Promise<void>;
   removePC: (pcId: string) => Promise<void>;
   refreshRentals: () => Promise<void>;
@@ -33,21 +32,23 @@ export const RentalProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, [toast]);
 
-  const deployPC = useCallback(async (config: Omit<PCConfiguration, 'id' | 'status'>) => {
+  const deployPC = useCallback(async (config: Omit<PCConfiguration, 'id' | 'status'>): Promise<PCConfiguration> => {
     setIsLoading(true);
     try {
-      await mockApi.deployPC(config);
+      const deployedPC = await mockApi.deployPC(config);
       await refreshRentals();
       toast({
         title: "Success",
         description: "PC deployment initiated! Your instance will be ready in a few moments.",
       });
+      return deployedPC;
     } catch (error) {
       toast({
         title: "Error",
         description: "Failed to deploy PC",
         variant: "destructive",
       });
+      throw error;
     } finally {
       setIsLoading(false);
     }
